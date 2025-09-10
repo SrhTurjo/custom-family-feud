@@ -4,7 +4,7 @@ var app = {
     version: 1,
     role: "player",
     socket: io.connect(),
-    jsonFile: "../public/data/FamilyFeud_Questions.json",
+    jsonFile: "../public/data/questions.json",
     currentQ: 0,
     wrong:0,
     board: $(`<div class='gameBoard'>
@@ -218,7 +218,7 @@ var app = {
         app.wrong++
         console.log("wrong: "+ app.wrong )
         var wrong = app.board.find(".wrongBoard")
-        $(wrong).find("img:nth-child("+app.wrong+")").show()
+        $(wrong).find("img:nth-child("+1+")").show()
         $(wrong).show()
         setTimeout(() => { 
             $(wrong).hide(); 
