@@ -112,13 +112,17 @@ var app = {
                 aLI = $(`<div class='cardHolder empty'><div></div></div>`)
             }
 
-            var parentDiv = holderMain//(i < (qNum / 2)) ? col1 : col2;
+            var parentDiv = holderMain;
             aLI.on('click', {
                 trigger: 'flipCard',
                 num: i
             }, app.talkSocket);
-            $(aLI).appendTo(parentDiv)
+            $(aLI).appendTo(parentDiv);
         }
+        // Set awarded property to false for all cards
+        app.board.find('.card').each(function() {
+            $(this).data('awarded', false);
+        });
 
         var cardHolders = app.board.find('.cardHolder');
         var cards = app.board.find('.card');
@@ -148,9 +152,9 @@ var app = {
         var score = 0;
 
         function tallyScore() {
-            if ($(this).data("flipped")) {
+            if ($(this).data("flipped") && !$(this).data("awarded")) {
                 var value = $(this).find("b").html();
-                score += parseInt(value)
+                score += parseInt(value);
             }
         }
         $.each(cards, tallyScore);
@@ -178,6 +182,13 @@ var app = {
                 team.html(Math.round(teamScore.var));
             },
             ease: Power3.easeOut
+        });
+
+        // Mark all flipped cards as awarded
+        app.board.find('.card').each(function() {
+            if ($(this).data('flipped') && !$(this).data('awarded')) {
+                $(this).data('awarded', true);
+            }
         });
 
         TweenMax.to(currentScore, 1, {
